@@ -14,7 +14,13 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "angular-calendar-eli": [
+        "dist/angular-calendar-eli/angular-calendar-eli",
+        "dist/angular-calendar-eli"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
