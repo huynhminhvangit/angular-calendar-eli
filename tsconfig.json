@@ -19,6 +19,9 @@
       "angular-calendar-eli": [
         "dist/angular-calendar-eli/angular-calendar-eli",
         "dist/angular-calendar-eli"
+      ],
+      "@angular/*": [
+        "./node_modules/@angular/*"
       ]
     }
   },
