@@ -64,13 +64,13 @@
 .timeCell {
 	background-color: #F6F6F6;
 	border-top: 1px solid #BFB9B0;
-	font-size: 11px;
+	font-size: 14px;
 	height: 35px;
 	line-height: 35px;
 	width: 100%;
 }
 .timeCell.timeSharpLine {
-	font-size: 13px;
+	font-size: 17px;
 }
 .weekPaging {
 	background-color: #FFFFFF;
@@ -157,7 +157,7 @@
 }
 .openCell > .icnOpen::before,
 .openCell > .icnOpen::after {
-	border: 1px solid #CC4466;
+	border: 1px solid #FF5D17;
 	border-radius: 100px;
 	content: "";
 	display: block;
@@ -233,6 +233,7 @@
 .weekPaging > .arrowPagingWeekR,
 .weekPaging > .arrowPagingWeekLOff,
 .weekPaging > .arrowPagingWeekL {
+	padding: 7px;
 	position: relative;
 }
 .weekPaging > .arrowPagingWeekROff:before,
@@ -470,7 +471,7 @@
 }
 .timeTableLeft,
 .timeTableRight {
-	width: 87px;
+	width: 100%;
 }
 .cloneHead {
 	border: solid #BFB9B0;

@@ -1,15 +1,13 @@
 <table class="innerTable nowrap jscInnerTable" cellpadding="0" cellspacing="0">
     <thead>
         <tr>
-            <th rowspan="2" class="weekPaging"><a href="#" title="前の一週間" class="arrowPagingWeekL jscCalNavi">前の一週間</a></th>
-            <th [attr.colspan]="monthCellFirst" class="monthCell">{{ startDate.getFullYear() }}年{{ startDate.getMonth() + 1 }}月</th>
-            <th [attr.colspan]="monthCellSecond" class="monthCell">{{ endDate.getFullYear() }}年{{ endDate.getMonth() + 1 }}月</th>
-            <th rowspan="2" class="weekPaging"><a
-                    href="#"
-                    title="次の一週間" class="arrowPagingWeekR jscCalNavi">次の一週間</a></th>
+            <th rowspan="2" class="weekPaging"><a href="javascript:void(0)" (click)="prevWeek()" title="前週" class="arrowPagingWeekL jscCalNavi">前週</a></th>
+            <th [attr.colspan]="monthCellFirst" class="monthCell">{{ startDate | date: 'yyyy' }}年{{ startDate| date: 'MM' }}月</th>
+            <th [attr.colspan]="monthCellSecond" class="monthCell">{{ endDate | date: 'yyyy' }}年{{ endDate | date: 'MM' }}月</th>
+            <th rowspan="2" class="weekPaging"><a href="javascript:void(0)" (click)="nextWeek()" title="次週" class="arrowPagingWeekR jscCalNavi">次週</a></th>
         </tr>
         <tr class="dayCellContainer">
-            <th *ngFor="let ele of listDate" [className]="ele.classDate">{{ ele.date.getDate() }}<br>({{ ele.dateName }})</th>
+            <th *ngFor="let ele of listDate; trackBy: trackByMethod" [className]="ele.classDate">{{ ele.date | date:'dd' }}<br>({{ ele.dateName }})</th>
         </tr>
     </thead>
     <tbody>
@@ -17,80 +15,14 @@
             <th>
                 <table cellpadding="0" cellspacing="0" class="moreInnerTable timeTableLeft">
                     <tbody>
-                        <tr>
-                            <th class="timeCell timeSharpLine">10：00</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell ">10：30</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell timeSharpLine">11：00</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell ">11：30</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell timeSharpLine">12：00</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell ">12：30</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell timeSharpLine">13：00</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell ">13：30</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell timeSharpLine">14：00</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell ">14：30</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell timeSharpLine">15：00</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell ">15：30</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell timeSharpLine">16：00</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell ">16：30</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell timeSharpLine">17：00</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell ">17：30</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell timeSharpLine">18：00</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell ">18：30</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell timeSharpLine">19：00</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell ">19：30</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell timeSharpLine">20：00</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell ">20：30</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell timeSharpLine">21：00</th>
+                        <tr *ngFor="let time of listDate[0].timeSheetKeys; index as i;trackBy: trackByMethod">
+                            <th [ngClass]="{'timeCell':true, 'timeSharpLine': i % 2 === 0}">{{ time }}</th>
                         </tr>
                     </tbody>
                 </table>
             </th>
 
-            <th *ngFor="let ele of listDate" [className]="ele.isHoliday ? 'closeCol' : 'innerCol'">
+            <th *ngFor="let ele of listDate;trackBy: trackByMethod" [className]="ele.isHoliday ? 'closeCol' : 'innerCol'">
                 <table *ngIf="ele.isHoliday" cellpadding="0" cellspacing="0" class="moreInnerTable">
                     <tbody>
                         <tr>
@@ -101,96 +33,9 @@
 
                 <table *ngIf="!ele.isHoliday" cellpadding="0" cellspacing="0" class="moreInnerTable">
                     <tbody>
-                        <tr>
-                            <td class="closeCell timeSharpLine"><span class="icnClose">×</span></td>
-                        </tr>
-                        <tr>
-                            <td class="openCell "><a
-                                    href="https://beauty.hotpepper.jp/CSP/bt/reserve/afterSchedule?storeId=H000289907&amp;rsvRequestDate1=20200922&amp;rsvRequestTime1=1030"
-                                    class="icnOpen">◎</a></td>
-                        </tr>
-                        <tr>
-                            <td class="closeCell timeSharpLine"><span class="icnClose">×</span></td>
-                        </tr>
-                        <tr>
-                            <td class="openCell "><a
-                                    href="https://beauty.hotpepper.jp/CSP/bt/reserve/afterSchedule?storeId=H000289907&amp;rsvRequestDate1=20200922&amp;rsvRequestTime1=1130"
-                                    class="icnOpen">◎</a></td>
-                        </tr>
-                        <tr>
-                            <td class="closeCell timeSharpLine"><span class="icnClose">×</span></td>
-                        </tr>
-                        <tr>
-                            <td class="closeCell "><span class="icnClose">×</span></td>
-                        </tr>
-                        <tr>
-                            <td class="closeCell timeSharpLine"><span class="icnClose">×</span></td>
-                        </tr>
-                        <tr>
-                            <td class="openCell "><a
-                                    href="https://beauty.hotpepper.jp/CSP/bt/reserve/afterSchedule?storeId=H000289907&amp;rsvRequestDate1=20200922&amp;rsvRequestTime1=1330"
-                                    class="icnOpen">◎</a></td>
-                        </tr>
-                        <tr>
-                            <td class="openCell timeSharpLine"><a
-                                    href="https://beauty.hotpepper.jp/CSP/bt/reserve/afterSchedule?storeId=H000289907&amp;rsvRequestDate1=20200922&amp;rsvRequestTime1=1400"
-                                    class="icnOpen">◎</a></td>
-                        </tr>
-                        <tr>
-                            <td class="openCell "><a
-                                    href="https://beauty.hotpepper.jp/CSP/bt/reserve/afterSchedule?storeId=H000289907&amp;rsvRequestDate1=20200922&amp;rsvRequestTime1=1430"
-                                    class="icnOpen">◎</a></td>
-                        </tr>
-                        <tr>
-                            <td class="openCell timeSharpLine"><a
-                                    href="https://beauty.hotpepper.jp/CSP/bt/reserve/afterSchedule?storeId=H000289907&amp;rsvRequestDate1=20200922&amp;rsvRequestTime1=1500"
-                                    class="icnOpen">◎</a></td>
-                        </tr>
-                        <tr>
-                            <td class="openCell "><a
-                                    href="https://beauty.hotpepper.jp/CSP/bt/reserve/afterSchedule?storeId=H000289907&amp;rsvRequestDate1=20200922&amp;rsvRequestTime1=1530"
-                                    class="icnOpen">◎</a></td>
-                        </tr>
-                        <tr>
-                            <td class="openCell timeSharpLine"><a
-                                    href="https://beauty.hotpepper.jp/CSP/bt/reserve/afterSchedule?storeId=H000289907&amp;rsvRequestDate1=20200922&amp;rsvRequestTime1=1600"
-                                    class="icnOpen">◎</a></td>
-                        </tr>
-                        <tr>
-                            <td class="openCell "><a
-                                    href="https://beauty.hotpepper.jp/CSP/bt/reserve/afterSchedule?storeId=H000289907&amp;rsvRequestDate1=20200922&amp;rsvRequestTime1=1630"
-                                    class="icnOpen">◎</a></td>
-                        </tr>
-                        <tr>
-                            <td class="openCell timeSharpLine"><a
-                                    href="https://beauty.hotpepper.jp/CSP/bt/reserve/afterSchedule?storeId=H000289907&amp;rsvRequestDate1=20200922&amp;rsvRequestTime1=1700"
-                                    class="icnOpen">◎</a></td>
-                        </tr>
-                        <tr>
-                            <td class="openCell "><a
-                                    href="https://beauty.hotpepper.jp/CSP/bt/reserve/afterSchedule?storeId=H000289907&amp;rsvRequestDate1=20200922&amp;rsvRequestTime1=1730"
-                                    class="icnOpen">◎</a></td>
-                        </tr>
-                        <tr>
-                            <td class="closeCell timeSharpLine"><span class="icnClose">×</span></td>
-                        </tr>
-                        <tr>
-                            <td class="closeCell "><span class="icnClose">×</span></td>
-                        </tr>
-                        <tr>
-                            <td class="closeCell timeSharpLine"><span class="icnClose">×</span></td>
-                        </tr>
-                        <tr>
-                            <td class="closeCell "><span class="icnClose">×</span></td>
-                        </tr>
-                        <tr>
-                            <td class="closeCell timeSharpLine"><span>－</span></td>
-                        </tr>
-                        <tr>
-                            <td class="closeCell "><span>－</span></td>
-                        </tr>
-                        <tr>
-                            <td class="closeCell timeSharpLine"><span>－</span></td>
+                        <tr *ngFor="let time of ele.timeSheet; index as i;trackBy: trackByMethod">
+                            <td *ngIf="!time[ele.timeSheetKeys[i]]" [ngClass]="{'closeCell':true, 'timeSharpLine': i % 2 !== 0}"><span class="icnClose">×</span></td>
+                            <td *ngIf="time[ele.timeSheetKeys[i]]" [ngClass]="{'openCell':true, 'timeSharpLine': i % 2 === 0}"><a href="#" class="icnOpen">◎</a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -199,74 +44,8 @@
             <th>
                 <table cellpadding="0" cellspacing="0" class="moreInnerTable timeTableRight">
                     <tbody>
-                        <tr>
-                            <th class="timeCell timeSharpLine">10：00</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell ">10：30</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell timeSharpLine">11：00</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell ">11：30</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell timeSharpLine">12：00</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell ">12：30</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell timeSharpLine">13：00</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell ">13：30</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell timeSharpLine">14：00</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell ">14：30</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell timeSharpLine">15：00</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell ">15：30</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell timeSharpLine">16：00</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell ">16：30</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell timeSharpLine">17：00</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell ">17：30</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell timeSharpLine">18：00</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell ">18：30</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell timeSharpLine">19：00</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell ">19：30</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell timeSharpLine">20：00</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell ">20：30</th>
-                        </tr>
-                        <tr>
-                            <th class="timeCell timeSharpLine">21：00</th>
+                        <tr *ngFor="let time of listDate[0].timeSheetKeys; index as i;trackBy: trackByMethod">
+                            <th [ngClass]="{'timeCell':true, 'timeSharpLine': i % 2 === 0}">{{ time }}</th>
                         </tr>
                     </tbody>
                 </table>
