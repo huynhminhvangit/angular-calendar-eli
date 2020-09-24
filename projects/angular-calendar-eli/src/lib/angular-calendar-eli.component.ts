@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'angular-calendar-eli',
@@ -9,63 +9,72 @@ export class AngularCalendarEliComponent implements OnInit {
 
   @Input() startDate: Date = new Date();
   @Input() endDate: Date;
-  monthCellFirst: number = 0;
-  monthCellSecond: number = 0;
-  daysOfWeek = ['日', '月', '火', '水', '木', '金', '土'];
-  defaultId: number = 1;
-
-  @Input() listDate: any;
-
+  @Input() daysOfWeek = ['日', '月', '火', '水', '木', '金', '土'];
+  @Input() listDate: any[];
   @Input() listHoliday: string[] = [];
+  @Input() timeSheet: any[] = [{ '10:00': false }, { '10:30': false }, { '11:00': false }, { '11:30': false }, { '12:00': false }, { '12:30': false }, { '13:00': false }, { '13:30': false }, { '14:00': false }, { '14:30': false }, { '15:00': false }, { '15:30': false }, { '16:00': false }, { '16:30': false }, { '17:00': false }, { '17:30': false }, { '18:00': false }, { '18:30': false }, { '19:00': false }, { '19:30': false }, { '20:00': false }, { '20:30': false }, { '21:00': false }];
+  @Input() timeSheetKey: string[] = ['10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00'];
+  
+  @Output() chooseValue = new EventEmitter();
+  
+  monthCellSecond: number = 0;
+  monthCellFirst: number = 0;
+  defaultId: number = 0;
+  listShowCalendar: any = [];
 
-
-  @Input() timeSheet: any = [{ '10:00': false }, { '10:30': false }, { '11:00': false }, { '11:30': false }, { '12:00': false }, { '12:30': false }, { '13:00': false }, { '13:30': false }, { '14:00': false }, { '14:30': false }, { '15:00': false }, { '15:30': false }, { '16:00': false }, { '16:30': true }, { '17:00': false }, { '17:30': false }, { '18:00': false }, { '18:30': false }, { '19:00': false }, { '19:30': false }, { '20:00': false }, { '20:30': false }, { '21:00': false }];
 
   constructor() { }
 
   ngOnInit(): void {
-    this.initialDate();
+    this.renderCalendar('+');
   }
 
 
-  initialDate() {
+  renderCalendar(operator) {
     this.endDate = new Date(this.startDate.getFullYear(), this.startDate.getMonth(), this.startDate.getDate() + 13);
     if (this.startDate.getMonth() < this.endDate.getMonth()) {
       let lastDateOfMonth = new Date(this.startDate.getFullYear(), this.startDate.getMonth() + 1, 0).getDate();
       this.monthCellFirst = lastDateOfMonth - (this.startDate.getDate() - 1);
       this.monthCellSecond = 14 - this.monthCellFirst;
+    } else {
+      this.monthCellFirst = 14;
+      this.monthCellSecond = 0;
     }
     let index = 0;
     let arrTemp = [];
     while (index < 14) {
-      let element = { id: 0, date: new Date(), isSunDay: false, isSatday: false, isHoliday: false, dateName: '', classDate: '', timeSheet: this.timeSheet, timeSheetKeys: [] };
-      let today = new Date(this.startDate.getFullYear(), this.startDate.getMonth(), this.startDate.getDate() + index);
+      if(this.defaultId === 70) {
+        this.defaultId = 69;
+      }
+      let element = this.listDate[this.defaultId];
+      if(operator === '+') {
+        this.defaultId++;
+      } else {
+        this.defaultId--;
+      }
       element.id = this.defaultId;
-      this.defaultId++;
-      element.date = today;
-      element.dateName = this.daysOfWeek[today.getDay()];
+      element.dateName = this.daysOfWeek[element.date.getDay()];
       element.classDate = 'dayCell';
       // Check SunDay
-      if (today.getDay() == 0) {
+      if (element.date.getDay() == 0) {
         element.isSunDay = true;
         element.classDate = 'sun';
       }
       // Check SatDay
-      if (today.getDay() == 6) {
+      if (element.date.getDay() == 6) {
         element.isSatday = true;
         element.classDate = 'sat';
       }
       // Check Holiday
-      if (this.listHoliday.includes(this.formatDate(today))) {
+      if (this.listHoliday.includes(this.formatDate(element.date))) {
         element.isHoliday = true;
         element.classDate = 'sun';
         element.dateName = '祝';
       }
-      element.timeSheetKeys = element.timeSheet.map(time => { return Object.keys(time)[0]; });
       arrTemp.push(element);
       index++;
     }
-    this.listDate = [...arrTemp];
+    this.listShowCalendar = [...arrTemp];
   }
 
   formatDate(date: Date) {
@@ -84,12 +93,27 @@ export class AngularCalendarEliComponent implements OnInit {
 
   prevWeek() {
     this.startDate.setDate(this.startDate.getDate() - 14);
-    this.initialDate();
+    let newDate = new Date(this.startDate.getFullYear(), this.startDate.getMonth(), this.startDate.getDate());
+    this.startDate = newDate;
+    this.renderCalendar('-');
   }
 
   nextWeek() {
     this.startDate.setDate(this.startDate.getDate() + 14);
-    this.initialDate();
+    let newDate = new Date(this.startDate.getFullYear(), this.startDate.getMonth(), this.startDate.getDate());
+    this.startDate = newDate;
+    this.renderCalendar('+');
+  }
+
+  chooseTime(indexShowCalendar,indexTimeSheet) {
+    let element = this.listShowCalendar[indexShowCalendar];
+    let obj = {
+      date: element.date,
+      dateFormat: this.formatDate(element.date),
+      time: this.timeSheetKey[indexTimeSheet]
+    }
+    this.chooseValue.emit(obj);
+
   }
 
   trackByMethod(index:number, el:any): number {

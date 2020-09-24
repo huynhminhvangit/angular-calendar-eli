@@ -1,13 +1,19 @@
 <table class="innerTable nowrap jscInnerTable" cellpadding="0" cellspacing="0">
     <thead>
         <tr>
-            <th rowspan="2" class="weekPaging"><a href="javascript:void(0)" (click)="prevWeek()" title="前週" class="arrowPagingWeekL jscCalNavi">前週</a></th>
-            <th [attr.colspan]="monthCellFirst" class="monthCell">{{ startDate | date: 'yyyy' }}年{{ startDate| date: 'MM' }}月</th>
-            <th [attr.colspan]="monthCellSecond" class="monthCell">{{ endDate | date: 'yyyy' }}年{{ endDate | date: 'MM' }}月</th>
-            <th rowspan="2" class="weekPaging"><a href="javascript:void(0)" (click)="nextWeek()" title="次週" class="arrowPagingWeekR jscCalNavi">次週</a></th>
+            <th rowspan="2" class="weekPaging">
+                <span *ngIf="defaultId === 14 || defaultId === 13" class="arrowPagingWeekLOff">前週</span>
+                <a *ngIf="defaultId !== 14 && defaultId !== 13" href="javascript:void(0)" (click)="prevWeek()" title="前週" class="arrowPagingWeekL jscCalNavi">前週</a>
+            </th>
+            <th *ngIf="monthCellFirst !== 0" [attr.colspan]="monthCellFirst" class="monthCell">{{ startDate | date: 'yyyy' }}年{{ startDate | date: 'MM' }}月</th>
+            <th *ngIf="monthCellSecond !== 0" [attr.colspan]="monthCellSecond" class="monthCell">{{ endDate | date: 'yyyy' }}年{{ endDate | date: 'MM' }}月</th>
+            <th rowspan="2" class="weekPaging">
+                <span *ngIf="defaultId === 70" class="arrowPagingWeekROff">次週</span>
+                <a *ngIf="defaultId !== 70" href="javascript:void(0)" (click)="nextWeek()" title="次週" class="arrowPagingWeekR jscCalNavi">次週</a>
+            </th>
         </tr>
         <tr class="dayCellContainer">
-            <th *ngFor="let ele of listDate; trackBy: trackByMethod" [className]="ele.classDate">{{ ele.date | date:'dd' }}<br>({{ ele.dateName }})</th>
+            <th *ngFor="let ele of listShowCalendar; trackBy: trackByMethod" [className]="ele.classDate">{{ ele.date | date:'dd' }}<br>({{ ele.dateName }})</th>
         </tr>
     </thead>
     <tbody>
@@ -15,14 +21,14 @@
             <th>
                 <table cellpadding="0" cellspacing="0" class="moreInnerTable timeTableLeft">
                     <tbody>
-                        <tr *ngFor="let time of listDate[0].timeSheetKeys; index as i;trackBy: trackByMethod">
+                        <tr *ngFor="let time of timeSheetKey; index as i;trackBy: trackByMethod">
                             <th [ngClass]="{'timeCell':true, 'timeSharpLine': i % 2 === 0}">{{ time }}</th>
                         </tr>
                     </tbody>
                 </table>
             </th>
 
-            <th *ngFor="let ele of listDate;trackBy: trackByMethod" [className]="ele.isHoliday ? 'closeCol' : 'innerCol'">
+            <th *ngFor="let ele of listShowCalendar;index as j;trackBy: trackByMethod" [className]="ele.isHoliday ? 'closeCol' : 'innerCol'">
                 <table *ngIf="ele.isHoliday" cellpadding="0" cellspacing="0" class="moreInnerTable">
                     <tbody>
                         <tr>
@@ -34,8 +40,8 @@
                 <table *ngIf="!ele.isHoliday" cellpadding="0" cellspacing="0" class="moreInnerTable">
                     <tbody>
                         <tr *ngFor="let time of ele.timeSheet; index as i;trackBy: trackByMethod">
-                            <td *ngIf="!time[ele.timeSheetKeys[i]]" [ngClass]="{'closeCell':true, 'timeSharpLine': i % 2 !== 0}"><span class="icnClose">×</span></td>
-                            <td *ngIf="time[ele.timeSheetKeys[i]]" [ngClass]="{'openCell':true, 'timeSharpLine': i % 2 === 0}"><a href="#" class="icnOpen">◎</a></td>
+                            <td *ngIf="!time[timeSheetKey[i]]" [ngClass]="{'closeCell':true, 'timeSharpLine': i % 2 === 0}"><span class="icnClose">×</span></td>
+                            <td *ngIf="time[timeSheetKey[i]]" [ngClass]="{'openCell':true, 'timeSharpLine': i % 2 === 0}"><a href="javascript:void(0)" (click)="chooseTime(j,i)" class="icnOpen">◎</a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -44,7 +50,7 @@
             <th>
                 <table cellpadding="0" cellspacing="0" class="moreInnerTable timeTableRight">
                     <tbody>
-                        <tr *ngFor="let time of listDate[0].timeSheetKeys; index as i;trackBy: trackByMethod">
+                        <tr *ngFor="let time of timeSheetKey; index as i;trackBy: trackByMethod">
                             <th [ngClass]="{'timeCell':true, 'timeSharpLine': i % 2 === 0}">{{ time }}</th>
                         </tr>
                     </tbody>
