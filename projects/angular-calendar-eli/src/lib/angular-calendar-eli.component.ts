@@ -49,16 +49,18 @@ export class AngularCalendarEliComponent implements OnInit, OnChanges {
     }
     let index = 0;
     let arrTemp = [];
+    if(operator === '+') {
+    } else {
+      this.defaultId = this.defaultId - 28;
+    }
     while (index < 14) {
       if(this.defaultId === 70) {
         this.defaultId = 69;
       }
       let element = this.listDate[this.defaultId];
-      if(operator === '+') {
-        this.defaultId++;
-      } else {
-        this.defaultId--;
-      }
+
+      this.defaultId++;
+
       element.id = this.defaultId;
       element.dateName = this.daysOfWeek[element.date.getDay()];
       element.classDate = 'dayCell';
@@ -125,16 +127,16 @@ export class AngularCalendarEliComponent implements OnInit, OnChanges {
     }
     let index = 0;
     let arrTemp = [];
+    if(operator === '+') {
+    } else {
+      this.defaultId = this.defaultId - 14;
+    }
     while (index < 7) {
       if(this.defaultId === 70) {
         this.defaultId = 69;
       }
       let element = this.listDate[this.defaultId];
-      if(operator === '+') {
-        this.defaultId++;
-      } else {
-        this.defaultId--;
-      }
+      this.defaultId++;
       element.id = this.defaultId;
       element.dateName = this.daysOfWeek[element.date.getDay()];
       element.classDate = 'w12p';
@@ -151,7 +153,7 @@ export class AngularCalendarEliComponent implements OnInit, OnChanges {
       // Check Holiday
       if (this.listHoliday.includes(this.formatDate(element.date))) {
         element.isHoliday = true;
-        element.classDate = 'sun';
+        element.classDate = 'sun-sp';
         element.dateName = '祝';
       }
       arrTemp.push(element);

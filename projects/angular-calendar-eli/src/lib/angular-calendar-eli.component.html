@@ -120,10 +120,10 @@
                         </tbody>
                     </table>
                 </th>
-                <td class="w12p" *ngFor="let ele of listShowCalendar;index as j;trackBy: trackByMethod"
-                    [className]="ele.isHoliday ? 'close-sp' : ''">
+                <td *ngFor="let ele of listShowCalendar;index as j;trackBy: trackByMethod"
+                    [className]="ele.isHoliday ? 'w12p close-sp' : 'w12p'">
 
-                    <p *ngIf="!ele.isHoliday" class="closeColText-sp">休業日</p>
+                    <p *ngIf="ele.isHoliday" class="closeColText-sp">休業日</p>
 
                     <table *ngIf="!ele.isHoliday" cellpadding="0" cellspacing="0" class="timeTable-sp">
                         <tbody>
