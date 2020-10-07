@@ -1,61 +1,157 @@
-<table class="innerTable nowrap jscInnerTable" cellpadding="0" cellspacing="0">
-    <thead>
-        <tr>
-            <th rowspan="2" class="weekPaging">
-                <span *ngIf="defaultId === 14 || defaultId === 13" class="arrowPagingWeekLOff">前週</span>
-                <a *ngIf="defaultId !== 14 && defaultId !== 13" href="javascript:void(0)" (click)="prevWeek()" title="前週" class="arrowPagingWeekL jscCalNavi">前週</a>
-            </th>
-            <th *ngIf="monthCellFirst !== 0" [attr.colspan]="monthCellFirst" class="monthCell">{{ startDate | date: 'yyyy' }}年{{ startDate | date: 'MM' }}月</th>
-            <th *ngIf="monthCellSecond !== 0" [attr.colspan]="monthCellSecond" class="monthCell">{{ endDate | date: 'yyyy' }}年{{ endDate | date: 'MM' }}月</th>
-            <th rowspan="2" class="weekPaging">
-                <span *ngIf="defaultId === 70" class="arrowPagingWeekROff">次週</span>
-                <a *ngIf="defaultId !== 70" href="javascript:void(0)" (click)="nextWeek()" title="次週" class="arrowPagingWeekR jscCalNavi">次週</a>
-            </th>
-        </tr>
-        <tr class="dayCellContainer">
-            <th *ngFor="let ele of listShowCalendar; trackBy: trackByMethod" [className]="ele.classDate">{{ ele.date | date:'dd' }}<br>({{ ele.dateName }})</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th>
-                <table cellpadding="0" cellspacing="0" class="moreInnerTable timeTableLeft">
-                    <tbody>
-                        <tr *ngFor="let time of timeSheetKey; index as i;trackBy: trackByMethod">
-                            <th [ngClass]="{'timeCell':true, 'timeSharpLine': i % 2 === 0}">{{ time }}</th>
-                        </tr>
-                    </tbody>
-                </table>
-            </th>
+<div *ngIf="!isMobile">
+    <table class="innerTable nowrap jscInnerTable" cellpadding="0" cellspacing="0">
+        <thead>
+            <tr>
+                <th rowspan="2" class="weekPaging">
+                    <span *ngIf="defaultId === 14 || defaultId === 13" class="arrowPagingWeekLOff">前週</span>
+                    <a *ngIf="defaultId !== 14 && defaultId !== 13" href="javascript:void(0)" (click)="prevWeek()"
+                        title="前週" class="arrowPagingWeekL jscCalNavi">前週</a>
+                </th>
+                <th *ngIf="monthCellFirst !== 0" [attr.colspan]="monthCellFirst" class="monthCell">
+                    {{ startDate | date: 'yyyy' }}年{{ startDate | date: 'MM' }}月</th>
+                <th *ngIf="monthCellSecond !== 0" [attr.colspan]="monthCellSecond" class="monthCell">
+                    {{ endDate | date: 'yyyy' }}年{{ endDate | date: 'MM' }}月</th>
+                <th rowspan="2" class="weekPaging">
+                    <span *ngIf="defaultId === 70" class="arrowPagingWeekROff">次週</span>
+                    <a *ngIf="defaultId !== 70" href="javascript:void(0)" (click)="nextWeek()" title="次週"
+                        class="arrowPagingWeekR jscCalNavi">次週</a>
+                </th>
+            </tr>
+            <tr class="dayCellContainer">
+                <th *ngFor="let ele of listShowCalendar; trackBy: trackByMethod" [className]="ele.classDate">
+                    {{ ele.date | date:'dd' }}<br>({{ ele.dateName }})</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>
+                    <table cellpadding="0" cellspacing="0" class="moreInnerTable timeTableLeft">
+                        <tbody>
+                            <tr *ngFor="let time of timeSheetKey; index as i;trackBy: trackByMethod">
+                                <th [ngClass]="{'timeCell':true, 'timeSharpLine': i % 2 === 0}">{{ time }}</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </th>
 
-            <th *ngFor="let ele of listShowCalendar;index as j;trackBy: trackByMethod" [className]="ele.isHoliday ? 'closeCol' : 'innerCol'">
-                <table *ngIf="ele.isHoliday" cellpadding="0" cellspacing="0" class="moreInnerTable">
-                    <tbody>
-                        <tr>
-                            <td class="closeColInner"><span class="closeColText">休業日</span></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <th *ngFor="let ele of listShowCalendar;index as j;trackBy: trackByMethod"
+                    [className]="ele.isHoliday ? 'closeCol' : 'innerCol'">
+                    <table *ngIf="ele.isHoliday" cellpadding="0" cellspacing="0" class="moreInnerTable">
+                        <tbody>
+                            <tr>
+                                <td class="closeColInner"><span class="closeColText">休業日</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                <table *ngIf="!ele.isHoliday" cellpadding="0" cellspacing="0" class="moreInnerTable">
-                    <tbody>
-                        <tr *ngFor="let time of ele.timeSheet; index as i;trackBy: trackByMethod">
-                            <td *ngIf="!time[timeSheetKey[i]]" [ngClass]="{'closeCell':true, 'timeSharpLine': i % 2 === 0}"><span class="icnClose">×</span></td>
-                            <td *ngIf="time[timeSheetKey[i]]" [ngClass]="{'openCell':true, 'timeSharpLine': i % 2 === 0}"><a href="javascript:void(0)" (click)="chooseTime(j,i)" class="icnOpen">◎</a></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </th>
+                    <table *ngIf="!ele.isHoliday" cellpadding="0" cellspacing="0" class="moreInnerTable">
+                        <tbody>
+                            <tr *ngFor="let time of ele.timeSheet; index as i;trackBy: trackByMethod">
+                                <td *ngIf="!time[timeSheetKey[i]]"
+                                    [ngClass]="{'closeCell':true, 'timeSharpLine': i % 2 === 0}"><span
+                                        class="icnClose">×</span></td>
+                                <td *ngIf="time[timeSheetKey[i]]"
+                                    [ngClass]="{'openCell':true, 'timeSharpLine': i % 2 === 0}"><a
+                                        href="javascript:void(0)" (click)="chooseTime(j,i)" class="icnOpen">◎</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </th>
 
-            <th>
-                <table cellpadding="0" cellspacing="0" class="moreInnerTable timeTableRight">
-                    <tbody>
-                        <tr *ngFor="let time of timeSheetKey; index as i;trackBy: trackByMethod">
-                            <th [ngClass]="{'timeCell':true, 'timeSharpLine': i % 2 === 0}">{{ time }}</th>
-                        </tr>
-                    </tbody>
-                </table>
-            </th>
-        </tr>
-    </tbody>
-</table>
+                <th>
+                    <table cellpadding="0" cellspacing="0" class="moreInnerTable timeTableRight">
+                        <tbody>
+                            <tr *ngFor="let time of timeSheetKey; index as i;trackBy: trackByMethod">
+                                <th [ngClass]="{'timeCell':true, 'timeSharpLine': i % 2 === 0}">{{ time }}</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </th>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div *ngIf="isMobile">
+    <div class="cFix row">
+        <div class="col-xs-6">
+            <span *ngIf="defaultId === 6 || defaultId === 7" class="rsvCalPrevBtn isDisabled">前週</span>
+            <a *ngIf="defaultId !== 6 && defaultId !== 7" href="javascript:void(0)" (click)="prevWeekSP()" title="前週"
+                class="rsvCalPrevBtn">前週</a>
+        </div>
+        <div class="col-xs-6">
+            <span *ngIf="defaultId === 70" class="rsvCalPrevBtn isDisabled">次週</span>
+            <a *ngIf="defaultId !== 70" href="javascript:void(0)" (click)="nextWeekSP()" title="次週"
+                class="rsvCalNextBtn">次週</a>
+        </div>
+    </div>
+
+    <div class="mT7">
+
+    </div>
+
+    <div id="jsiCalHeader" class="calHeaderWrap" style="margin-top: 0px;">
+        <table summary="予約時間一覧" class="dayTable-sp upperDate">
+            <tbody>
+                <tr class="timeColor-sp">
+                    <th rowspan="2" scope="col" class="w16p">日時</th>
+                    <th *ngIf="monthCellFirst !== 0" [attr.colspan]="monthCellFirst">
+                        {{ startDate | date: 'yyyy' }}年{{ startDate | date: 'MM' }}月</th>
+                    <th *ngIf="monthCellSecond !== 0" [attr.colspan]="monthCellSecond">
+                        {{ endDate | date: 'yyyy' }}年{{ endDate | date: 'MM' }}月</th>
+                </tr>
+                <tr class="timeColor-sp">
+                    <td *ngFor="let ele of listShowCalendar; trackBy: trackByMethod" [className]="ele.classDate"><span
+                            class="calDate">{{ ele.date | date:'dd' }}</span>({{ ele.dateName }})</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <table id="jsiCalDayTable" summary="予約時間一覧" class="dayTable-sp" style="margin-top: 0px;">
+        <tbody>
+            <tr>
+                <th scope="row" class="w16p ">
+                    <table summary="時間帯" class="timeTable-sp timeTableBand-sp timeColor-sp">
+                        <tbody>
+                            <tr *ngFor="let time of timeSheetKey; index as i;trackBy: trackByMethod">
+                                <td [ngClass]="{'timeSharp-sp': i % 2 === 0}" class="timeSharp-sp"><span>{{ time }}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </th>
+                <td class="w12p" *ngFor="let ele of listShowCalendar;index as j;trackBy: trackByMethod"
+                    [className]="ele.isHoliday ? 'close-sp' : ''">
+
+                    <p *ngIf="!ele.isHoliday" class="closeColText-sp">休業日</p>
+
+                    <table *ngIf="!ele.isHoliday" cellpadding="0" cellspacing="0" class="timeTable-sp">
+                        <tbody>
+                            <tr *ngFor="let time of ele.timeSheet; index as i;trackBy: trackByMethod">
+                                <td *ngIf="!time[timeSheetKey[i]]"
+                                    [ngClass]="{'close-sp':true, 'timeSharp-sp': i % 2 === 0}"><span
+                                        class="icnClose">×</span></td>
+                                <td *ngIf="time[timeSheetKey[i]]"
+                                    [ngClass]="{'wCircle':true, 'timeSharp-sp': i % 2 === 0}"><a
+                                        href="javascript:void(0)" (click)="chooseTime(j,i)" class="icnOpen">◎</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="cFix mT7 row">
+        <div class="col-xs-6">
+            <span *ngIf="defaultId === 6 || defaultId === 7" class="rsvCalPrevBtn isDisabled">前週</span>
+            <a *ngIf="defaultId !== 6 && defaultId !== 7" href="javascript:void(0)" (click)="prevWeekSP()" title="前週"
+                class="rsvCalPrevBtn">前週</a>
+        </div>
+        <div class="col-xs-6">
+            <span *ngIf="defaultId === 70" class="rsvCalPrevBtn isDisabled">次週</span>
+            <a *ngIf="defaultId !== 70" href="javascript:void(0)" (click)="nextWeekSP()" title="次週"
+                class="rsvCalNextBtn">次週</a>
+        </div>
+    </div>
+</div>

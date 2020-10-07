@@ -1,11 +1,11 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'angular-calendar-eli',
   templateUrl: 'angular-calendar-eli.component.html',
   styleUrls: ['angular-calendar-eli.component.css']
 })
-export class AngularCalendarEliComponent implements OnInit {
+export class AngularCalendarEliComponent implements OnInit, OnChanges {
 
   @Input() startDate: Date = new Date();
   @Input() endDate: Date;
@@ -21,12 +21,19 @@ export class AngularCalendarEliComponent implements OnInit {
   monthCellFirst: number = 0;
   defaultId: number = 0;
   listShowCalendar: any = [];
+  @Input() isMobile: boolean = false;
 
 
   constructor() { }
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes.isMobile.currentValue) {
+      this.renderCalendarSP('+');
+    } else {
+      this.renderCalendar('+');
+    }
+  }
 
   ngOnInit(): void {
-    this.renderCalendar('+');
   }
 
 
@@ -103,6 +110,68 @@ export class AngularCalendarEliComponent implements OnInit {
     let newDate = new Date(this.startDate.getFullYear(), this.startDate.getMonth(), this.startDate.getDate());
     this.startDate = newDate;
     this.renderCalendar('+');
+  }
+
+
+  renderCalendarSP(operator) {
+    this.endDate = new Date(this.startDate.getFullYear(), this.startDate.getMonth(), this.startDate.getDate() + 6);
+    if (this.startDate.getMonth() < this.endDate.getMonth()) {
+      let lastDateOfMonth = new Date(this.startDate.getFullYear(), this.startDate.getMonth() + 1, 0).getDate();
+      this.monthCellFirst = lastDateOfMonth - (this.startDate.getDate() - 1);
+      this.monthCellSecond = 7 - this.monthCellFirst;
+    } else {
+      this.monthCellFirst = 7;
+      this.monthCellSecond = 0;
+    }
+    let index = 0;
+    let arrTemp = [];
+    while (index < 7) {
+      if(this.defaultId === 70) {
+        this.defaultId = 69;
+      }
+      let element = this.listDate[this.defaultId];
+      if(operator === '+') {
+        this.defaultId++;
+      } else {
+        this.defaultId--;
+      }
+      element.id = this.defaultId;
+      element.dateName = this.daysOfWeek[element.date.getDay()];
+      element.classDate = 'w12p';
+      // Check SunDay
+      if (element.date.getDay() == 0) {
+        element.isSunDay = true;
+        element.classDate = 'sun-sp';
+      }
+      // Check SatDay
+      if (element.date.getDay() == 6) {
+        element.isSatday = true;
+        element.classDate = 'sat-sp';
+      }
+      // Check Holiday
+      if (this.listHoliday.includes(this.formatDate(element.date))) {
+        element.isHoliday = true;
+        element.classDate = 'sun';
+        element.dateName = '祝';
+      }
+      arrTemp.push(element);
+      index++;
+    }
+    this.listShowCalendar = [...arrTemp];
+  }
+
+  prevWeekSP() {
+    this.startDate.setDate(this.startDate.getDate() - 7);
+    let newDate = new Date(this.startDate.getFullYear(), this.startDate.getMonth(), this.startDate.getDate());
+    this.startDate = newDate;
+    this.renderCalendarSP('-');
+  }
+
+  nextWeekSP() {
+    this.startDate.setDate(this.startDate.getDate() + 7);
+    let newDate = new Date(this.startDate.getFullYear(), this.startDate.getMonth(), this.startDate.getDate());
+    this.startDate = newDate;
+    this.renderCalendarSP('+');
   }
 
   chooseTime(indexShowCalendar,indexTimeSheet) {

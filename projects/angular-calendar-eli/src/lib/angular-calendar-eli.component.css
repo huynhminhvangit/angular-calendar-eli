@@ -485,3 +485,248 @@
 .nowrap {
     white-space: nowrap;
 }
+
+
+
+
+
+
+
+
+
+.dayTable-sp {
+	border-collapse: collapse;
+	border-spacing: 0;
+	width: 99.9%;
+}
+.dayTable-sp th, .dayTable-sp td {
+	border: 1px solid #CCCCCC;
+	text-align: center;
+	position: relative;
+}
+.timeTable-sp {
+	border-collapse: collapse;
+	border-spacing: 0;
+	color: #666666;
+	height: 275px;
+	width: 100%;
+}
+.timeTable-sp td {
+	border: none;
+	height: 35px;
+	text-align: center;
+	line-height: 18px;
+}
+.timeTable-sp td.isDisabled,
+.telCell.isDisabled {
+	background: #FFFFFF;
+	color: #CCCCCC;
+}
+.timeTable-sp.timeColor-sp td,
+.timeColor-sp > th.w16p {
+	min-width: 56px;
+	padding-right: 2px;
+}
+.timeTable-sp tr:not(:first-child) > td {
+	border-top: 1px solid #CCCCCC;
+}
+.timeTableBand-sp td.timeSharp-sp {
+	font-size: 14px;
+}
+.timeTable-sp tr:not(:first-child) > .timeSharp-sp {
+	border-top: 2px solid #CCCCCC;
+}
+.timeTableBand-sp td:not(.timeSharp-sp) > span {
+	padding-left: 5px;
+}
+.sun-sp		{ background-color: #FFDEE7; color: #BB5555; }
+.sat-sp		{ background-color: #CDE5F3; color: #4466BB; }
+.close-sp		{ background-color: #EEEEEE; z-index: 1; }
+.telColText-sp,
+.closeColText-sp {
+	font-family: sans-serif;
+	letter-spacing: 5px;
+	left: 50%;
+	position: absolute;
+	top: calc(50% + 3px); /* letter-spacingが文字下部に5pxつくため、半分の2.5pxを切り上げた3px分を下にずらすことで上下中央寄せにする */
+	transform: translate(-50%, -50%);
+	white-space: nowrap;
+	writing-mode: vertical-rl;
+}
+
+.wCircle,
+.circle {
+	font-size: 16px;
+	line-height: 1;
+	vertical-align: middle;
+}
+.wCircle > a,
+.wCircle > span,
+.circle > a,
+.circle > span {
+	background-color: white;
+	color: #FF5D17 !important;
+	display: block;
+	height: 100%;
+	position: relative;
+	text-decoration: none !important;
+	text-indent: -9999px;
+	width: 100%;
+}
+.wCircle > a::before,
+.wCircle > a::after,
+.wCircle > span::before,
+.wCircle > span::after {
+	border: 1px solid #FF5D17;
+	border-radius: 100px;
+	content: "";
+	display: block;
+	left: 0;
+	margin: auto;
+	position: absolute;
+	right: 0;
+}
+.wCircle > a::before,
+.wCircle > span::before {
+	height: 14px;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+	width: 14px;
+}
+.wCircle > a::after,
+.wCircle > span::after {
+	height: 8px;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+	width: 8px;
+}
+.circle > a:before,
+.circle > span:before {
+	border: 1px solid #FF5D17;
+	border-radius: 100px;
+	content: "";
+	display: block;
+	height: 12px;
+	left: 0;
+	margin: auto;
+	position: absolute;
+	right: 0;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+	width: 12px;
+}
+.timeTable-sp td.isDisabled.wCircle > span::before,
+.timeTable-sp td.isDisabled.wCircle > span::after,
+.timeTable-sp td.isDisabled.circle > span::before {
+	border: 1px solid #CCCCCC;
+}
+@media screen and (device-width : 480px) and (device-width : 800px) {
+	.wCircle { font-size: 26px; line-height:24px; height:26px; }
+	.timeTable-sp td {
+		border: none;
+		height: 26px;
+		text-align: center;
+		line-height: 26px;
+	}
+}
+
+
+
+
+.upperDate {
+	color: #775E5E;
+}
+.upperDate tr {
+	background-color: #FFFFFF;
+}
+.calDate {
+	display: block;
+	font-size: 14px;
+	line-height: 18px;
+	padding-top: 2px;
+}
+
+
+/* 前/次の一週間ボタン */
+.rsvCalTopBtnWrap {
+	padding: 10px;
+}
+.rsvCalNextBtn,
+.rsvCalPrevBtn {
+	background-color: #FFFFFF;
+	border: solid #BFB9B0;
+	border-radius: 4px;
+	border-width: 1px 1px 2px 1px;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	display: block;
+	font-weight: bold;
+	height: 32px;
+	line-height: 30px;
+	position: relative;
+	text-align: center;
+	text-decoration: none;
+	min-width: 120px;
+}
+.rsvCalNextBtn.isDisabled,
+.rsvCalPrevBtn.isDisabled {
+	border: solid #CCCCCC;
+	border-radius: 4px;
+	border-width: 1px 1px 2px 1px;
+	color: #CCCCCC !important;
+}
+.rsvCalNextBtn:visited,
+.rsvCalPrevBtn:visited,
+.rsvCalNextBtn:link,
+.rsvCalPrevBtn:link {
+	color: #666666;
+}
+.rsvCalPrevBtn::after,
+.rsvCalNextBtn::after {
+	border-color: #666666;
+	border-style: solid;
+	border-width: 0 2px 2px 0;
+	content: "";
+	display: block;
+	height: 5px;
+	line-height: 1;
+	margin-top: -4px;
+	position: absolute;
+	top: 50%;
+	width: 5px;
+}
+.rsvCalPrevBtn::after {
+	left: 12px;
+	-webkit-transform: rotate(135deg);
+	transform: rotate(135deg);
+}
+.rsvCalNextBtn::after {
+	right: 12px;
+	-webkit-transform: rotate(-45deg);
+	transform: rotate(-45deg);
+}
+.rsvCalPrevBtn.isDisabled::after, .rsvCalNextBtn.isDisabled::after {
+	border-color: #CCCCCC;
+	border-style: solid;
+	border-width: 0 2px 2px 0;
+}
+
+.isFixed {
+	left: 0;
+	z-index: 100;
+	position: fixed;
+	width: 100%;
+}
+
+.w12p {
+    width: 12%;
+}
+.w16p {
+    width: 16%;
+}
