@@ -90,7 +90,7 @@
 
     </div>
 
-    <div id="jsiCalHeader" class="calHeaderWrap" style="margin-top: 0px;">
+    <div id="jsiCalHeader" #header class="calHeaderWrap" style="margin-top: 0px;">
         <table summary="予約時間一覧" class="dayTable-sp upperDate">
             <tbody>
                 <tr class="timeColor-sp">
@@ -115,7 +115,8 @@
                     <table summary="時間帯" class="timeTable-sp timeTableBand-sp timeColor-sp">
                         <tbody>
                             <tr *ngFor="let time of timeSheetKey; index as i;trackBy: trackByMethod">
-                                <td [ngClass]="{'timeSharp-sp': i % 2 === 0}" class="timeSharp-sp"><span>{{ time }}</span></td>
+                                <td [ngClass]="{'timeSharp-sp': i % 2 === 0}" class="timeSharp-sp">
+                                    <span>{{ time }}</span></td>
                             </tr>
                         </tbody>
                     </table>

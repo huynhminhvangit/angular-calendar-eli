@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges, ElementRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'angular-calendar-eli',
@@ -13,10 +13,12 @@ export class AngularCalendarEliComponent implements OnInit, OnChanges {
   @Input() listDate: any[];
   @Input() listHoliday: string[] = [];
   @Input() timeSheet: any[] = [{ '10:00': false }, { '10:30': false }, { '11:00': false }, { '11:30': false }, { '12:00': false }, { '12:30': false }, { '13:00': false }, { '13:30': false }, { '14:00': false }, { '14:30': false }, { '15:00': false }, { '15:30': false }, { '16:00': false }, { '16:30': false }, { '17:00': false }, { '17:30': false }, { '18:00': false }, { '18:30': false }, { '19:00': false }, { '19:30': false }, { '20:00': false }, { '20:30': false }, { '21:00': false }];
-  @Input() timeSheetKey: string[] = ['10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00'];
-  
+  @Input() timeSheetKey: string[] = ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00'];
+
   @Output() chooseValue = new EventEmitter();
-  
+
+  @ViewChild('header') header: ElementRef;
+
   monthCellSecond: number = 0;
   monthCellFirst: number = 0;
   defaultId: number = 0;
@@ -26,7 +28,7 @@ export class AngularCalendarEliComponent implements OnInit, OnChanges {
 
   constructor() { }
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes.isMobile.currentValue) {
+    if (changes.isMobile.currentValue) {
       this.renderCalendarSP('+');
     } else {
       this.renderCalendar('+');
@@ -34,6 +36,11 @@ export class AngularCalendarEliComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+  }
+  ngAfterViewInit() {
+    if(this.isMobile) {
+      this.scrollHeader();
+    }
   }
 
 
@@ -49,12 +56,12 @@ export class AngularCalendarEliComponent implements OnInit, OnChanges {
     }
     let index = 0;
     let arrTemp = [];
-    if(operator === '+') {
+    if (operator === '+') {
     } else {
       this.defaultId = this.defaultId - 28;
     }
     while (index < 14) {
-      if(this.defaultId === 70) {
+      if (this.defaultId === 70) {
         this.defaultId = 69;
       }
       let element = this.listDate[this.defaultId];
@@ -127,12 +134,12 @@ export class AngularCalendarEliComponent implements OnInit, OnChanges {
     }
     let index = 0;
     let arrTemp = [];
-    if(operator === '+') {
+    if (operator === '+') {
     } else {
       this.defaultId = this.defaultId - 14;
     }
     while (index < 7) {
-      if(this.defaultId === 70) {
+      if (this.defaultId === 70) {
         this.defaultId = 69;
       }
       let element = this.listDate[this.defaultId];
@@ -176,7 +183,7 @@ export class AngularCalendarEliComponent implements OnInit, OnChanges {
     this.renderCalendarSP('+');
   }
 
-  chooseTime(indexShowCalendar,indexTimeSheet) {
+  chooseTime(indexShowCalendar, indexTimeSheet) {
     let element = this.listShowCalendar[indexShowCalendar];
     let obj = {
       date: element.date,
@@ -187,8 +194,28 @@ export class AngularCalendarEliComponent implements OnInit, OnChanges {
 
   }
 
-  trackByMethod(index:number, el:any): number {
+  trackByMethod(index: number, el: any): number {
     return index;
   }
 
+  scrollHeader() {
+    window.onscroll = function () { myFunction() };
+    var header = document.getElementById("jsiCalHeader");
+    var elementTop = document.getElementById("jsiCalDayTable").getBoundingClientRect().top;
+    var wind = document.body.getBoundingClientRect().top;
+    var sticky = elementTop - wind;
+
+    function myFunction() {
+      if (window.pageYOffset > sticky) {
+        header.classList.add("sticky");
+        var widthCalendar = document.getElementById("jsiCalDayTable").getBoundingClientRect().width;
+        header.style.width = (widthCalendar + "px");
+      } else {
+        header.classList.remove("sticky");
+      }
+      if (window.pageYOffset > 1600) {
+        header.classList.remove("sticky");
+      }
+    }
+  }
 }
